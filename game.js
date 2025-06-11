@@ -185,6 +185,7 @@ function restart() {
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
     startIdleAnimation();
+    console.log("Game restarted");
 
 }
 
@@ -223,9 +224,14 @@ const frameWidth = 48;
 const frameHeight = 48;
 
 function startIdleAnimation() {
+    spriteIdle.onload = startIdleAnimation;
     let currentFrame = 0;
     let totalFrames = 4;
     let frameDelay = 120;
+    canvas.style.opacity = '1';
+    const frameWidth = 48;
+    const frameHeight = 48;
+
 
     clearInterval(animationInterval);
     canvas.width = frameWidth * 5;
