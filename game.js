@@ -3,10 +3,12 @@ let cards = [
     {
         "image": "./assets/deer.png",
         "name": "deer"
+        // health
     },
     {
         "image": "./assets/deer.png",
         "name": "deer"
+        //not health
     },
     {
         "image": "./assets/duck.png",
