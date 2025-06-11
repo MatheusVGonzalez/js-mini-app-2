@@ -1,54 +1,54 @@
 const gridContainer = document.querySelector('.grid-container');
 let cards = [
     {
-        "image": "./assets/deer.png",
-        "name": "deer"
+        "image": "./assets/apple.png",
+        "name": "apple"
         // health
     },
     {
-        "image": "./assets/deer.png",
-        "name": "deer"
+        "image": "./assets/apple.png",
+        "name": "apple"
         //not health
     },
     {
-        "image": "./assets/duck.png",
-        "name": "duck"
+        "image": "./assets/burger.png",
+        "name": "burger"
     },
     {
-        "image": "./assets/duck.png",
-        "name": "duck"
+        "image": "./assets/burger.png",
+        "name": "burger"
     },
     {
-        "image": "./assets/leopard.png",
-        "name": "leopard"
+        "image": "./assets/carrots.png",
+        "name": "carrots"
     },
     {
-        "image": "./assets/leopard.png",
-        "name": "leopard"
+        "image": "./assets/carrots.png",
+        "name": "carrots"
     },
     {
-        "image": "./assets/lion.png",
-        "name": "lion"
+        "image": "./assets/chocolate-bar.png",
+        "name": "chocolate"
     },
     {
-        "image": "./assets/lion.png",
-        "name": "lion"
+        "image": "./assets/chocolate-bar.png",
+        "name": "chocolate"
     },
     {
-        "image": "./assets/tiger.png",
-        "name": "tiger"
+        "image": "./assets/french-fries.png",
+        "name": "french fries"
     },
     {
-        "image": "./assets/tiger.png",
-        "name": "tiger"
+        "image": "./assets/french-fries.png",
+        "name": "french fries"
     },
     {
-        "image": "./assets/zebra.png",
-        "name": "zebra"
+        "image": "./assets/pizza.png",
+        "name": "pizza"
     },
     {
-        "image": "./assets/zebra.png",
-        "name": "zebra"
+        "image": "./assets/pizza.png",
+        "name": "pizza"
     }
 ]
 let firstCard, secondCard;
@@ -232,4 +232,37 @@ function addGameLogEntry(message) {
   const newLog = document.createElement('div');
   newLog.textContent = `${String(logCount).padStart(2, '0')} - ${message}`;
   logBox.appendChild(newLog);
+}
+
+
+function dog() {
+    const canvas = document.getElementById("dogCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const sprite = new Image();
+        sprite.src = "assets/Walk.png"; 
+
+        const frameWidth = 48;
+        const frameHeight = 48;
+        const totalFrames = 6;
+
+        let currentFrame = 0;
+        let x = 0;
+        let frameDelay = 100; 
+
+        sprite.onload = () => {
+        setInterval(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(
+            sprite,
+            currentFrame * frameWidth, 0,         
+            frameWidth, frameHeight,              
+            0, 0,                                 
+            frameWidth, frameHeight               
+            );
+
+            currentFrame = (currentFrame + 1) % totalFrames;
+        }, frameDelay);
+        };
 }
