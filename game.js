@@ -81,8 +81,8 @@ let win = new Audio('./assets/win.mp3');
 // animation
 let animationInterval = null; 
 
-const canvas = document.getElementById("dogCanvas");
-const ctx = canvas.getContext("2d");
+const dogCanvas = document.getElementById("dogCanvas");
+const ctx = dogCanvas.getContext("2d");
 
 const spriteIdle = new Image();
 spriteIdle.src = "assets/Idle.png";
@@ -239,15 +239,15 @@ function dogActivate() {
     }
 
     clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 6;
+    dogCanvas.width = frameWidth * 5;
+    dogCanvas.height = frameHeight * 6;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(5, 5);
 
     animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
         ctx.drawImage(
-            spriteIdle,
+            score == 0 ? spriteIdle : spriteRun,
             currentFrame * frameWidth, 0,
             frameWidth, frameHeight,
             0, 0,
@@ -262,17 +262,16 @@ spriteIdle.onload = dogActivate;
 
 function showDogHouseAndAnimate() {
   const homeContainer = document.querySelector('.home-container');
-  const canvas = document.getElementById("dogCanvas");
 
   homeContainer.style.display = 'block';
 
-  canvas.style.transition = 'transform 2s ease, opacity 2s ease';
-  canvas.style.transform = 'translateX(80px) scale(0.2)';
-  canvas.style.opacity = '0';
+  dogCanvas.style.transition = 'transform 2s ease, opacity 2s ease';
+  dogCanvas.style.transform = 'translateX(80px) scale(0.2)';
+  dogCanvas.style.opacity = '0';
 
   setTimeout(() => {
     clearInterval(animationInterval);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
   }, 2000);
 }
 
