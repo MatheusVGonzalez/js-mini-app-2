@@ -16,47 +16,11 @@
         <button onclick="restart()">Start/Restart Game</button>
       </div>
     </div>
-    <div class="dog-container">
-      <canvas id="dogCanvas" width="164" height="164"></canvas>
-
-      <script>
-        const canvas = document.getElementById("dogCanvas");
-        const ctx = canvas.getContext("2d");
-
-        const sprite = new Image();
-        sprite.src = "assets/Walk.png"; 
-
-        const frameWidth = 48; 
-        const frameHeight = 48;
-        const totalFrames = 6;
-
-        let currentFrame = 0;
-        let x = 0;
-        let frameDelay = 100;
-
-        sprite.onload = () => {
-            canvas.width = frameWidth * 5;
-            canvas.height = frameHeight * 5;
-          setInterval(() => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.drawImage(
-              sprite,
-              currentFrame * frameWidth,
-              0, 
-              frameWidth,
-              frameHeight, 
-              0,
-              0, 
-              frameWidth,
-              frameHeight 
-            );
-
-            currentFrame = (currentFrame + 1) % totalFrames;
-          }, frameDelay);
-        };
-      </script>
+    <div class="animal-container">
+       <canvas id="dogCanvas" width="48" height="48">
     </div>
+
     <script src="game.js"></script>
-  </body>
+    <script src="dog.js"></script>
+</body>
 </html>
