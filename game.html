@@ -8,13 +8,14 @@
 </head>
 <body>
     <h1>Memory Cards</h1>
-    <div id="game-log" class="log-box"></div>
-     <div id="timer">Loading timer...</div>
-    <div class="grid-container"></div>
-    <p>Score: <span class="score"></span></p>
-    <div class="actions">
-        <button onclick="restart(), startTimer(timeInSeconds)">Start/Restart Game</button>
+    <div class="games-container">
+        <div id="game-log" class="log-box"></div>
+        <div class="grid-container"></div>
+        <p>Score: <span class="score"></span></p>
+        <div class="actions">
+            <button onclick="restart()">Start/Restart Game</button>
+        </div>
+        <script src="game.js"></script>
     </div>
-    <script src="game.js"></script>
 </body>
 </html>
