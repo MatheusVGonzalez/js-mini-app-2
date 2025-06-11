@@ -36,11 +36,11 @@ let cards = [
     },
     {
         "image": "./assets/french-fries.png",
-        "name": "french fries"
+        "name": "fries"
     },
     {
         "image": "./assets/french-fries.png",
-        "name": "french fries"
+        "name": "fries"
     },
     {
         "image": "./assets/pizza.png",
@@ -58,6 +58,7 @@ let restartVar = false;
 let audio = new Audio('./assets/click.mp3');
 let correct = new Audio('./assets/correct.mp3');
 let win = new Audio('./assets/win.mp3');
+const totalPairs = cards.length / 2;
 
 document.querySelector(".score").textContent = score;
 
@@ -113,7 +114,6 @@ function flipCard() {
     secondCard = this;
 
     checkForMatch();
-    winGame();
 }
 
 function checkForMatch() {
@@ -153,6 +153,11 @@ function disableCards() {
     secondCard.removeEventListener('click', flipCard);
     
     resetBoard();
+
+        setTimeout(() => {
+        winGame();
+    }, 500);
+
 }
 
 function unflipCards() {
@@ -182,12 +187,12 @@ function restart() {
 }
 
 
-function winGame(){
-    if (score === cards.length / 2) {
-        clearInterval(countdown);
-        addGameLogEntry("Win - "+ level + " level");
-        disablePointer();
-        win.play();
+function winGame(){    
+    const parsedScore = parseInt(score, 10);
+    const parsedTotal = parseInt(totalPairs, 10);
+    if (parsedScore === parsedTotal) {
+        showDogHouseAndAnimate();
+        console.log("You win!");
     }
 }
 
@@ -384,3 +389,24 @@ function runDog6() {
 }
 
 spriteIdle.onload = startIdleAnimation;
+
+
+function showDogHouseAndAnimate() {
+  const homeContainer = document.querySelector('.home-container');
+  const canvas = document.getElementById("dogCanvas");
+
+  // Mostra a casinha
+  homeContainer.style.display = 'block';
+
+  // Anima o cachorro até a casinha
+  canvas.style.transition = 'transform 2s ease, opacity 2s ease';
+  canvas.style.transform = 'translateX(80px) scale(0.2)';
+  canvas.style.opacity = '0';
+
+  // Depois de 2 segundos, limpa o canvas
+  setTimeout(() => {
+    clearInterval(animationInterval);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, 2000);
+}
+
