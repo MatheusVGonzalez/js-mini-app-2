@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Game Card</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Memory Cards</h1>
     <div class="games-container">
-        <div id="game-log" class="log-box"></div>
-        <div class="grid-container"></div>
-        <p>Score: <span class="score"></span></p>
-        <div class="actions">
-            <button onclick="restart()">Start/Restart Game</button>
-        </div>
-
+      <div id="game-log" class="log-box"></div>
+      <div class="grid-container"></div>
+      <p>Score: <span class="score"></span></p>
+      <div class="actions">
+        <button onclick="restart()">Start/Restart Game</button>
+      </div>
     </div>
-    <div class="animal-container">
-        <script>
+    <div class="dog-container">
+      <canvas id="dogCanvas" width="164" height="164"></canvas>
+
+      <script>
         const canvas = document.getElementById("dogCanvas");
         const ctx = canvas.getContext("2d");
 
         const sprite = new Image();
         sprite.src = "assets/Walk.png"; 
 
-        const frameWidth = 48;
+        const frameWidth = 48; 
         const frameHeight = 48;
         const totalFrames = 6;
 
         let currentFrame = 0;
         let x = 0;
-        let frameDelay = 100; 
+        let frameDelay = 100;
 
         sprite.onload = () => {
-        setInterval(() => {
+            canvas.width = frameWidth * 5;
+            canvas.height = frameHeight * 5;
+          setInterval(() => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             ctx.drawImage(
-            sprite,
-            currentFrame * frameWidth, 0,         
-            frameWidth, frameHeight,              
-            0, 0,                                 
-            frameWidth, frameHeight               
+              sprite,
+              currentFrame * frameWidth,
+              0, 
+              frameWidth,
+              frameHeight, 
+              0,
+              0, 
+              frameWidth,
+              frameHeight 
             );
 
             currentFrame = (currentFrame + 1) % totalFrames;
-        }, frameDelay);
+          }, frameDelay);
         };
-        </script>
+      </script>
     </div>
-</body>
+    <script src="game.js"></script>
+  </body>
 </html>
