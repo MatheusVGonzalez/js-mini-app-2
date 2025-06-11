@@ -1,0 +1,122 @@
+body {
+    min-height: 100vh;
+    min-width: 100vh;
+    background-color: #12181f;
+    color: white
+}
+
+h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 50px;
+}
+
+p {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+}
+
+.actions button {
+    padding: 8px 16px;
+    font-size: 30px;
+    border-radius: 10px;
+    background-color: #27ae60;
+    color: white;;
+}
+
+.grid-container {
+    display: grid;
+    justify-content: center;
+    grid-gap: 16px;
+    grid-template-columns: repeat(6, 140px);
+    grid-template-rows: repeat(2, calc(140px / 2 * 3));;
+}
+
+.card {
+    height: calc(140px / 2 * 3);
+    width: 140px;
+    border-radius: 10px;
+    background-color: white;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease-in-out;
+}
+
+.front-image {
+    width: 60px;
+    height: 60px;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+#timer{
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.front,
+.back {
+    backface-visibility: hidden;
+    position: absolute;
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.card .front {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(180deg);
+}
+
+.card .back {
+    background-image: url("./assets/cardBack.png");
+    background-position: center center;
+    background-size: cover;
+    backface-visibility: hidden;
+}
+nav{
+    text-align: center;
+    margin-top: 95px;
+}
+nav a{
+    color: white;
+    text-decoration: none;
+    list-style: none;
+    font-size: 35px;
+    border: white 1px solid;
+    padding: 20px;
+}
+nav li{
+    list-style: none;
+    margin-bottom: 90px;
+    
+}
+
+.log-box {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+  z-index: 1000;
+}
