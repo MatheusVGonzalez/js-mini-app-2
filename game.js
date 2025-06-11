@@ -59,22 +59,6 @@ let audio = new Audio('./assets/click.mp3');
 let correct = new Audio('./assets/correct.mp3');
 let win = new Audio('./assets/win.mp3');
 
-const canvas = document.getElementById("dogCanvas");
-const ctx = canvas.getContext("2d");
-
-const sprite = new Image();
-sprite.src = "assets/Idle.png"; 
-
-const frameWidth = 48;
-const frameHeight = 48;
-const totalFrames = 4;
-
-let currentFrame = 0;
-let x = 0;
-let frameDelay = 100; 
-
-
-
 document.querySelector(".score").textContent = score;
 
 // fetch('./data/cards.json')
@@ -138,6 +122,24 @@ function checkForMatch() {
     isMatch ? disableCards() : unflipCards();
     if (isMatch) {
         correct.play();
+        if(score === 1){
+            runDog();
+        }
+        if(score === 2){
+            runDog2();
+        }
+        if(score === 3){
+            runDog3();
+        }
+        if(score === 4){
+            runDog4();
+        }
+        if(score === 5){
+            runDog5();
+        }
+        if(score === 6){
+            runDog6();
+        }
     } 
 
 }
@@ -176,58 +178,7 @@ function restart() {
     document.querySelector(".score").textContent = score;
     gridContainer.innerHTML = '';
     generateCards();
-}
-// Jessie's part
-let countdown;
-
-const params = new URLSearchParams(window.location.search);
-const level = params.get("level");
-
-const levelTimes = {
-  easy: 60,
-  medium: 35,
-  hard: 20
-};
-
-const timeInSeconds = levelTimes[level] || 30; 
-
-function startTimer(seconds) {
-  if(restartVar == true){
-  clearInterval(countdown);
-  const timerDisplay = document.getElementById("timer");
-  const end = Date.now() + seconds * 1000;
-
-  updateDisplay(seconds);
-
-  countdown = setInterval(() => {
-    const secondsLeft = Math.round((end - Date.now()) / 1000);
-    if (secondsLeft <= 0) {
-      clearInterval(countdown);
-      timerDisplay.textContent = "Time's up!";
-      restart();
-      disablePointer();
-      addGameLogEntry("Lose - " + level + " level");
-      return;
-    }
-    updateDisplay(secondsLeft);
-  }, 1000);
-  }
-}
-
-function updateDisplay(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainderSeconds = seconds % 60;
-  const display = `${minutes}:${remainderSeconds < 10 ? "0" : ""}${remainderSeconds}`;
-  document.getElementById("timer").textContent = display;
-}
-
-startTimer(timeInSeconds);
-
-function disablePointer() { //just to disable pointer events on cards - Matheus
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.style.pointerEvents = 'none';
-    });
+    startIdleAnimation();
 }
 
 
@@ -250,21 +201,186 @@ function addGameLogEntry(message) {
   logBox.appendChild(newLog);
 }
 
-sprite.onload = () => {
+let animationInterval = null; 
+
+const canvas = document.getElementById("dogCanvas");
+const ctx = canvas.getContext("2d");
+
+const spriteIdle = new Image();
+spriteIdle.src = "assets/Idle.png";
+
+const spriteRun = new Image();
+spriteRun.src = "assets/Walk.png";
+
+const frameWidth = 48;
+const frameHeight = 48;
+
+function startIdleAnimation() {
+    let currentFrame = 0;
+    let totalFrames = 4;
+    let frameDelay = 120;
+
+    clearInterval(animationInterval);
     canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.scale(5, 5); 
-    setInterval(() => {
+    canvas.height = frameHeight * 6;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         ctx.drawImage(
-        sprite,
-        currentFrame * frameWidth, 0,         
-        frameWidth, frameHeight,              
-        0, 0,                                 
-        frameWidth, frameHeight               
+            spriteIdle,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
         );
-
         currentFrame = (currentFrame + 1) % totalFrames;
     }, frameDelay);
-};
+}
+
+function runDog() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 170;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+function runDog2() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 150;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+function runDog3() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 130;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+function runDog4() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 110;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+function runDog5() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 90;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+function runDog6() {
+    let currentFrame = 0;
+    let totalFrames = 6;
+    let frameDelay = 70;
+
+    clearInterval(animationInterval);
+    canvas.width = frameWidth * 5;
+    canvas.height = frameHeight * 5;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(
+            spriteRun,
+            currentFrame * frameWidth, 0,
+            frameWidth, frameHeight,
+            0, 0,
+            frameWidth, frameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+}
+
+spriteIdle.onload = startIdleAnimation;
