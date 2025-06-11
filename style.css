@@ -2,7 +2,18 @@ body {
     min-height: 100vh;
     min-width: 100vh;
     background-color: #12181f;
-    color: white
+    color: white;
+
+}
+
+.all-container {
+    display: flex;
+    height: 100vh;
+    margin-left: 100px;
+}
+
+.animal-container {
+    margin-left: 250px;
 }
 
 .games-container {
