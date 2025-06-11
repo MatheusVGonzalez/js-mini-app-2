@@ -1,4 +1,15 @@
 const gridContainer = document.querySelector('.grid-container');
+
+// let cards = [];
+// fetch('./data/cards.json')
+//   .then(response => response.json())
+//   .then(data => {
+//     // cards = data.cards;
+//     cards = [...data, ...data];;
+//     shuffleCards();
+//     generateCards();
+//   })
+//   .catch(error => console.error('Error loading cards:', error));
 let cards = [
     {
         "image": "./assets/apple.png",
@@ -51,6 +62,10 @@ let cards = [
         "name": "pizza"
     }
 ]
+
+
+const totalPairs = cards.length / 2;
+
 let firstCard, secondCard;
 let lockBoard = false;
 let score = 0;
@@ -58,19 +73,27 @@ let restartVar = false;
 let audio = new Audio('./assets/click.mp3');
 let correct = new Audio('./assets/correct.mp3');
 let win = new Audio('./assets/win.mp3');
-const totalPairs = cards.length / 2;
+
+
+
+// let logCount = 0;
+
+// animation
+let animationInterval = null; 
+
+const canvas = document.getElementById("dogCanvas");
+const ctx = canvas.getContext("2d");
+
+const spriteIdle = new Image();
+spriteIdle.src = "assets/Idle.png";
+
+const spriteRun = new Image();
+spriteRun.src = "assets/Walk.png";
+
+const frameWidth = 48;
+const frameHeight = 48;
 
 document.querySelector(".score").textContent = score;
-
-// fetch('./data/cards.json')
-//   .then(response => response.json())
-//   .then(data => {
-//     // cards = data.cards;
-//     cards = [...data, ...data];;
-//     shuffleCards();
-//     generateCards();
-//   })
-//   .catch(error => console.error('Error loading cards:', error));
 
 
 function shuffleCards() {
@@ -122,24 +145,7 @@ function checkForMatch() {
     isMatch ? disableCards() : unflipCards();
     if (isMatch) {
         correct.play();
-        if(score === 1){
-            runDog();
-        }
-        if(score === 2){
-            runDog2();
-        }
-        if(score === 3){
-            runDog3();
-        }
-        if(score === 4){
-            runDog4();
-        }
-        if(score === 5){
-            runDog5();
-        }
-        if(score === 6){
-            runDog6();
-        }
+        dogActivate();
     } 
 
 }
@@ -184,7 +190,7 @@ function restart() {
     gridContainer.innerHTML = '';
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
-    startIdleAnimation();
+    dogActivate();
 
 }
 
@@ -198,34 +204,39 @@ function winGame(){
     }
 }
 
-let logCount = 0;
+// function addGameLogEntry(message) {
+//   logCount++;
+//   const logBox = document.getElementById('game-log');
+//   const newLog = document.createElement('div');
+//   newLog.textContent = `${String(logCount).padStart(2, '0')} - ${message}`;
+//   logBox.appendChild(newLog);
+// }
 
-function addGameLogEntry(message) {
-  logCount++;
-  const logBox = document.getElementById('game-log');
-  const newLog = document.createElement('div');
-  newLog.textContent = `${String(logCount).padStart(2, '0')} - ${message}`;
-  logBox.appendChild(newLog);
-}
 
-let animationInterval = null; 
-
-const canvas = document.getElementById("dogCanvas");
-const ctx = canvas.getContext("2d");
-
-const spriteIdle = new Image();
-spriteIdle.src = "assets/Idle.png";
-
-const spriteRun = new Image();
-spriteRun.src = "assets/Walk.png";
-
-const frameWidth = 48;
-const frameHeight = 48;
-
-function startIdleAnimation() {
+function dogActivate() {
     let currentFrame = 0;
     let totalFrames = 4;
     let frameDelay = 120;
+
+    if (score === 1) {
+        totalFrames = 6;
+        frameDelay = 170;
+    } else if (score === 2) {
+        totalFrames = 6;
+        frameDelay = 150;
+    } else if (score === 3) {
+        totalFrames = 6;
+        frameDelay = 130;
+    } else if (score === 4) {
+        totalFrames = 6;
+        frameDelay = 110;
+    } else if (score === 5) {
+        totalFrames = 6;
+        frameDelay = 90;
+    } else if (score === 6) {
+        totalFrames = 6;
+        frameDelay = 70;
+    }
 
     clearInterval(animationInterval);
     canvas.width = frameWidth * 5;
@@ -246,151 +257,7 @@ function startIdleAnimation() {
     }, frameDelay);
 }
 
-function runDog() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 170;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-function runDog2() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 150;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-function runDog3() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 130;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-function runDog4() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 110;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-function runDog5() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 90;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-function runDog6() {
-    let currentFrame = 0;
-    let totalFrames = 6;
-    let frameDelay = 70;
-
-    clearInterval(animationInterval);
-    canvas.width = frameWidth * 5;
-    canvas.height = frameHeight * 5;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
-
-    animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(
-            spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
-            0, 0,
-            frameWidth, frameHeight
-        );
-        currentFrame = (currentFrame + 1) % totalFrames;
-    }, frameDelay);
-}
-
-spriteIdle.onload = startIdleAnimation;
+spriteIdle.onload = dogActivate;
 
 
 function showDogHouseAndAnimate() {
