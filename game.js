@@ -183,7 +183,9 @@ function restart() {
     document.querySelector(".score").textContent = score;
     gridContainer.innerHTML = '';
     generateCards();
+    document.querySelector('.home-container').style.display = 'none';
     startIdleAnimation();
+
 }
 
 
@@ -395,15 +397,12 @@ function showDogHouseAndAnimate() {
   const homeContainer = document.querySelector('.home-container');
   const canvas = document.getElementById("dogCanvas");
 
-  // Mostra a casinha
   homeContainer.style.display = 'block';
 
-  // Anima o cachorro até a casinha
   canvas.style.transition = 'transform 2s ease, opacity 2s ease';
   canvas.style.transform = 'translateX(80px) scale(0.2)';
   canvas.style.opacity = '0';
 
-  // Depois de 2 segundos, limpa o canvas
   setTimeout(() => {
     clearInterval(animationInterval);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
