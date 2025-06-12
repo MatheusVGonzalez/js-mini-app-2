@@ -227,22 +227,6 @@ function restart() {
 
 }
 
-function nextLevel() {
-    if (currentLevel < maxLevel) {
-        console.log("Next Level");
-        console.log("Next Level");
-        currentLevel++;
-        resetBoard();
-        shuffleCards();
-        gridContainer.innerHTML = '';
-        generateCards();
-        dogActivate();
-    } else {
-        winGame();
-        
-    }
-}
-
 function getLevelFromURL() {
     const params = new URLSearchParams(window.location.search);
     const level = params.get('level') || 'easy';
@@ -256,7 +240,26 @@ function getLevelFromURL() {
     }
 
     currentLevel = 1;
-    restart(); 
+}
+
+
+function nextLevel() {
+    getLevelFromURL();
+    console.log(currentLevel);
+    console.log(maxLevel);
+    if (currentLevel < maxLevel) {
+        console.log("Next Level");
+        console.log("Next Level");
+        currentLevel++;
+        resetBoard();
+        shuffleCards();
+        gridContainer.innerHTML = '';
+        generateCards();
+        dogActivate();
+    } else {
+        winGame();
+        
+    }
 }
 
 
