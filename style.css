@@ -176,3 +176,15 @@ nav li{
     opacity: 1;
   }
 }
+#lifeCanvas {
+  display: block;     /* 또는 inline-block */
+  visibility: visible;
+  opacity: 1;
+  z-index: 10;
+  width: 100%;
+}
+
+.life {
+    position: absolute;
+    width: 15%;
+}
