@@ -219,6 +219,7 @@ function restart() {
     gridContainer.innerHTML = '';
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
+    document.querySelector('.next-level').style.display = 'none';
     dogCanvas.style.transform = "translateX(0px) scale(1)";
     dogCanvas.style.opacity = "1";
     dogActivate();
@@ -275,6 +276,7 @@ function winGame(){
     if (parsedScore === parsedTotal) {
         showDogHouseAndAnimate();
         console.log("You win!");
+        document.querySelector('.next-level').style.display = 'block';
     }
 }
 

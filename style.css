@@ -138,6 +138,10 @@ nav li{
   z-index: 1000;
 }
 
+.next-level {
+    margin-left: 15px;
+}
+
 .home-container {
   position: relative;
   width: 100px;
