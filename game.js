@@ -68,6 +68,7 @@ const totalPairs = cards.length / 2;
 
 let firstCard, secondCard;
 let lockBoard = false;
+let stopBoard = false;
 let score = 0;
 let restartVar = false;
 let audio = new Audio('./assets/click.mp3');
@@ -82,7 +83,7 @@ let win = new Audio('./assets/win.mp3');
 let animationInterval = null; 
 
 const dogCanvas = document.getElementById("dogCanvas");
-const ctx = dogCanvas.getContext("2d");
+const dogCtx = dogCanvas.getContext("2d");
 
 const spriteIdle = new Image();
 spriteIdle.src = "assets/Idle.png";
@@ -90,8 +91,27 @@ spriteIdle.src = "assets/Idle.png";
 const spriteRun = new Image();
 spriteRun.src = "assets/Walk.png";
 
-const frameWidth = 48;
-const frameHeight = 48;
+const spriteHurt = new Image();
+spriteHurt.src = "assets/Hurt.png";
+
+const spriteDeath = new Image();
+spriteDeath.src = "assets/Death.png";
+
+const dogFrameWidth = 48;
+const dogFrameHeight = 48;
+
+
+const lifeCanvas = document.getElementById("lifeCanvas");
+const lifeCtx = lifeCanvas.getContext("2d");
+
+const lifeSprite = new Image();
+lifeSprite.src = "./assets/life.png";
+
+const lifeFrameCount = 6;
+const lifeFrameWidth = 910;
+const lifeFrameHeight = 230;
+
+let currentLifeIndex = 0;
 
 document.querySelector(".score").textContent = score;
 
@@ -125,6 +145,7 @@ function generateCards() {
 }
 
 function flipCard() {
+    if (stopBoard) return;
     if (lockBoard) return;
     if (this === firstCard) return;
     audio.play();
@@ -146,7 +167,9 @@ function checkForMatch() {
     if (isMatch) {
         correct.play();
         dogActivate();
-    } 
+    } else {
+        takeDamage();
+    }
 
 }
 
@@ -191,6 +214,10 @@ function restart() {
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
     dogActivate();
+
+    currentLifeIndex = 0;
+    stopBoard = false;
+    drawLifeBarFromSprite();
 
 }
 
@@ -239,19 +266,19 @@ function dogActivate() {
     }
 
     clearInterval(animationInterval);
-    dogCanvas.width = frameWidth * 5;
-    dogCanvas.height = frameHeight * 6;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(5, 5);
+    dogCanvas.width = dogFrameWidth * 5;
+    dogCanvas.height = dogFrameHeight * 6;
+    dogCtx.setTransform(1, 0, 0, 1, 0, 0);
+    dogCtx.scale(5, 5);
 
     animationInterval = setInterval(() => {
-        ctx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
-        ctx.drawImage(
+        dogCtx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
+        dogCtx.drawImage(
             score == 0 ? spriteIdle : spriteRun,
-            currentFrame * frameWidth, 0,
-            frameWidth, frameHeight,
+            currentFrame * dogFrameWidth, 0,
+            dogFrameWidth, dogFrameHeight,
             0, 0,
-            frameWidth, frameHeight
+            dogFrameWidth, dogFrameHeight
         );
         currentFrame = (currentFrame + 1) % totalFrames;
     }, frameDelay);
@@ -271,7 +298,99 @@ function showDogHouseAndAnimate() {
 
   setTimeout(() => {
     clearInterval(animationInterval);
-    ctx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
+    dogCtx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
   }, 2000);
 }
 
+function drawLifeBarFromSprite() {
+    lifeCtx.clearRect(0, 0, lifeCanvas.width, lifeCanvas.height);
+
+    lifeCtx.drawImage(
+        lifeSprite,
+        0, currentLifeIndex * lifeFrameHeight,  // Y축 기준으로 자르기
+        lifeFrameWidth, lifeFrameHeight,
+        0, 0,
+        lifeFrameWidth, lifeFrameHeight
+    );
+}
+
+function takeDamage() {
+    // hit
+    hurt();
+
+    // life bar
+    if (currentLifeIndex < lifeFrameCount - 1) {
+        currentLifeIndex++;
+        drawLifeBarFromSprite();
+    }
+
+    
+    // if currentLifeIndex == 4 -> die
+    if (currentLifeIndex === 4) {;
+        death();
+        return;
+    }
+
+    // again activate after 1 second
+    setTimeout(() => {
+        dogActivate();
+    }, 1000);
+
+}
+
+lifeSprite.onload = drawLifeBarFromSprite;
+
+function hurt() {
+    let currentFrame = 0;
+    let totalFrames = 2;
+    let frameDelay = 120;
+
+    clearInterval(animationInterval);
+    dogCanvas.width = dogFrameWidth * 5;
+    dogCanvas.height = dogFrameHeight * 6;
+    dogCtx.setTransform(1, 0, 0, 1, 0, 0);
+    dogCtx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        dogCtx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
+        dogCtx.drawImage(
+            spriteHurt,
+            currentFrame * dogFrameWidth, 0,
+            dogFrameWidth, dogFrameHeight,
+            0, 0,
+            dogFrameWidth, dogFrameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+    
+}
+
+function death() {
+    stopBoard = true;
+
+    let currentFrame = 0;
+    let totalFrames = 4;
+    let frameDelay = 120;
+
+    clearInterval(animationInterval);
+    dogCanvas.width = dogFrameWidth * 5;
+    dogCanvas.height = dogFrameHeight * 6;
+    dogCtx.setTransform(1, 0, 0, 1, 0, 0);
+    dogCtx.scale(5, 5);
+
+    let deathAnimation = () => {
+        if (currentFrame < totalFrames) {
+            dogCtx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
+            dogCtx.drawImage(
+                spriteDeath,
+                currentFrame * dogFrameWidth, 0,
+                dogFrameWidth, dogFrameHeight,
+                0, 0,
+                dogFrameWidth, dogFrameHeight
+            );
+            currentFrame++;
+            setTimeout(deathAnimation, frameDelay);
+        }
+    };
+    deathAnimation();
+}
