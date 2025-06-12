@@ -172,6 +172,7 @@ function checkForMatch() {
     if (isMatch) {
         correct.play();
         dogActivate();
+        heal();
     } else {
         takeDamage();
     }
@@ -401,7 +402,13 @@ function hurt() {
         );
         currentFrame = (currentFrame + 1) % totalFrames;
     }, frameDelay);
-    
+}
+
+function heal() {
+    if (currentLifeIndex > 0) {
+        currentLifeIndex--;
+        drawLifeBarFromSprite();
+    }
 }
 
 function death() {
