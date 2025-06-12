@@ -76,6 +76,11 @@ let win = new Audio('./assets/win.mp3');
 
 
 
+const level = document.querySelector('.level');
+let currentLevel = 1;
+let maxLevel = 1; 
+
+
 // let logCount = 0;
 
 // animation
@@ -83,6 +88,7 @@ let animationInterval = null;
 
 const dogCanvas = document.getElementById("dogCanvas");
 const ctx = dogCanvas.getContext("2d");
+
 
 const spriteIdle = new Image();
 spriteIdle.src = "assets/Idle.png";
@@ -94,7 +100,6 @@ const frameWidth = 48;
 const frameHeight = 48;
 
 document.querySelector(".score").textContent = score;
-
 
 function shuffleCards() {
     let currentIndex = cards.length, randomIndex, temporaryValue;
@@ -191,8 +196,41 @@ function restart() {
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
     dogActivate();
-
 }
+
+function nextLevel() {
+    if (currentLevel < maxLevel) {
+        console.log("Next Level");
+        console.log("Next Level");
+        currentLevel++;
+        resetBoard();
+        shuffleCards();
+        gridContainer.innerHTML = '';
+        generateCards();
+        dogActivate();
+    } else {
+        winGame();
+        
+    }
+}
+
+function getLevelFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const level = params.get('level') || 'easy';
+
+    if (level === 'easy') {
+        maxLevel = 1;
+    } else if (level === 'medium') {
+        maxLevel = 3;
+    } else if (level === 'hard') {
+        maxLevel = 6;
+    }
+
+    currentLevel = 1;
+    restart(); 
+}
+
+
 
 
 function winGame(){    

@@ -60,14 +60,14 @@ p {
     justify-content: center;
     grid-gap: 16px;
     grid-template-columns: repeat(4, 140px);
-    grid-template-rows: repeat(3, calc(90px / 2 * 3));;
+    grid-template-rows: repeat(4, calc(90px / 2 * 3));;
 }
 .grid-container3 {
     display: grid;
     justify-content: center;
     grid-gap: 16px;
     grid-template-columns: repeat(4, 140px);
-    grid-template-rows: repeat(3, calc(90px / 2 * 3));;
+    grid-template-rows: repeat(5, calc(90px / 2 * 3));;
 }
 
 .card {
