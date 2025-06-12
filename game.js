@@ -242,7 +242,6 @@ function getLevelFromURL() {
         maxLevel = 6;
     }
 
-    currentLevel = 1;
 }
 
 
@@ -256,16 +255,21 @@ function nextLevel() {
     dogCanvas.style.transform = "translateX(0px) scale(1)";
     dogCanvas.style.opacity = "1";
     document.querySelector('.home-container').style.display = 'none';
+
     if (currentLevel < maxLevel) {
-        console.log("Next Level");
-        console.log("Next Level");
+        console.log("Current Level:", currentLevel);
+        console.log("Max Level:", maxLevel);
         currentLevel++;
         resetBoard();
         shuffleCards();
         gridContainer.innerHTML = '';
         generateCards();
         dogActivate();
-    } else {
+    }else if(currentLevel === maxLevel) { //need to see this part and test
+        showDogHouseAndAnimate();
+        alert("You win!");
+        document.querySelector('.next-level').style.display = 'none';
+    }else {
         winGame();
         
     }
