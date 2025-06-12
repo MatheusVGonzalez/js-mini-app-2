@@ -219,6 +219,8 @@ function restart() {
     gridContainer.innerHTML = '';
     generateCards();
     document.querySelector('.home-container').style.display = 'none';
+    dogCanvas.style.transform = "translateX(0px) scale(1)";
+    dogCanvas.style.opacity = "1";
     dogActivate();
 
     currentLifeIndex = 0;
@@ -245,8 +247,10 @@ function getLevelFromURL() {
 
 function nextLevel() {
     getLevelFromURL();
-    console.log(currentLevel);
-    console.log(maxLevel);
+
+    dogCanvas.style.transform = "translateX(0px) scale(1)";
+    dogCanvas.style.opacity = "1";
+    document.querySelector('.home-container').style.display = 'none';
     if (currentLevel < maxLevel) {
         console.log("Next Level");
         console.log("Next Level");

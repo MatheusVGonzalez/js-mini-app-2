@@ -8,7 +8,6 @@ body {
 
 .all-container {
     display: flex;
-    height: 100vh;
     margin-left: 100px;
 }
 
@@ -54,20 +53,6 @@ p {
     grid-gap: 16px;
     grid-template-columns: repeat(4, 140px);
     grid-template-rows: repeat(3, calc(90px / 2 * 3));;
-}
-.grid-container2 {
-    display: grid;
-    justify-content: center;
-    grid-gap: 16px;
-    grid-template-columns: repeat(4, 140px);
-    grid-template-rows: repeat(4, calc(90px / 2 * 3));;
-}
-.grid-container3 {
-    display: grid;
-    justify-content: center;
-    grid-gap: 16px;
-    grid-template-columns: repeat(4, 140px);
-    grid-template-rows: repeat(5, calc(90px / 2 * 3));;
 }
 
 .card {
