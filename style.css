@@ -98,7 +98,7 @@ p {
 }
 
 .card .back {
-    background-image: url("./assets/cardBack.png");
+    background-image: url('./assets/cardBack-1.jpeg');
     background-position: center center;
     background-size: cover;
     backface-visibility: hidden;
