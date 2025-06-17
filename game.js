@@ -63,7 +63,22 @@ let cards = [
     }
 ]
 
+// levels
+const params = new URLSearchParams(window.location.search);
+const level = params.get('level') || 'easy';
 
+let currentLevel = 1;
+let maxLevel = 1; 
+
+if (level === 'easy') {
+    maxLevel = 1;
+} else if (level === 'medium') {
+    maxLevel = 3;
+} else if (level === 'hard') {
+    maxLevel = 6;
+}
+
+// cards
 const totalPairs = cards.length / 2;
 
 let firstCard, secondCard;
@@ -71,18 +86,12 @@ let lockBoard = false;
 let stopBoard = false;
 let score = 0;
 let restartVar = false;
+
+// sound
 let audio = new Audio('./assets/click.mp3');
 let correct = new Audio('./assets/correct.mp3');
 let win = new Audio('./assets/win.mp3');
 
-
-
-const level = document.querySelector('.level');
-let currentLevel = 1;
-let maxLevel = 1; 
-
-
-// let logCount = 0;
 
 // animation
 let animationInterval = null; 
@@ -103,6 +112,9 @@ spriteHurt.src = "assets/Hurt.png";
 const spriteDeath = new Image();
 spriteDeath.src = "assets/Death.png";
 
+const spriteBark = new Image();
+spriteBark.src = "assets/Bark.png";
+
 const dogFrameWidth = 48;
 const dogFrameHeight = 48;
 
@@ -119,7 +131,10 @@ const lifeFrameHeight = 230;
 
 let currentLifeIndex = 0;
 
-document.querySelector(".score").textContent = score;
+// timer
+let startTime = null;
+let endTime = null;
+
 
 function shuffleCards() {
     let currentIndex = cards.length, randomIndex, temporaryValue;
@@ -130,6 +145,11 @@ function shuffleCards() {
         temporaryValue = cards[currentIndex];
         cards[currentIndex] = cards[randomIndex];
         cards[randomIndex] = temporaryValue;
+    }
+
+    // timer start
+    if (!startTime) {
+        startTime = Date.now();
     }
 }
 
@@ -171,8 +191,13 @@ function checkForMatch() {
     isMatch ? disableCards() : unflipCards();
     if (isMatch) {
         correct.play();
-        dogActivate();
+        bark();
         heal();
+
+        setTimeout(() => {
+            dogActivate();
+        }, 2000);
+
     } else {
         takeDamage();
     }
@@ -189,8 +214,8 @@ function disableCards() {
     
     resetBoard();
 
-        setTimeout(() => {
-        winGame();
+    setTimeout(() => {
+        matchCards();
     }, 500);
 
 }
@@ -211,6 +236,8 @@ function resetBoard() {
 }
 
 function restart() {
+    startTime = null;
+    endTime = null;
     restartVar = true;
     resetBoard();
     shuffleCards();
@@ -230,71 +257,46 @@ function restart() {
 
 }
 
-function getLevelFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    const level = params.get('level') || 'easy';
-
-    if (level === 'easy') {
-        maxLevel = 1;
-    } else if (level === 'medium') {
-        maxLevel = 3;
-    } else if (level === 'hard') {
-        maxLevel = 6;
-    }
-
-}
-
 
 function nextLevel() {
-    getLevelFromURL();
-
     dogCanvas.style.transform = "translateX(0px) scale(1)";
     dogCanvas.style.opacity = "1";
     document.querySelector('.home-container').style.display = 'none';
-
-    dogCanvas.style.transform = "translateX(0px) scale(1)";
-    dogCanvas.style.opacity = "1";
-    document.querySelector('.home-container').style.display = 'none';
+    document.querySelector('.next-level').style.display = 'none';
 
     if (currentLevel < maxLevel) {
-        console.log("Current Level:", currentLevel);
-        console.log("Max Level:", maxLevel);
         currentLevel++;
         resetBoard();
         shuffleCards();
         gridContainer.innerHTML = '';
         generateCards();
         dogActivate();
-    }else if(currentLevel === maxLevel) { //need to see this part and test
-        showDogHouseAndAnimate();
-        alert("You win!");
-        document.querySelector('.next-level').style.display = 'none';
-    }else {
-        winGame();
-        
+    } else {
+        gridContainer.innerHTML = '';
+        resetBoard();
+        shuffleCards();
+        generateCards();
+        dogActivate();
     }
 }
 
 
+function matchCards(){
+    let flippedCount = document.querySelectorAll('.card.flipped').length;
 
-
-function winGame(){    
-    const parsedScore = parseInt(score, 10);
-    const parsedTotal = parseInt(totalPairs, 10);
-    if (parsedScore === parsedTotal) {
+    if (flippedCount === cards.length) {
         showDogHouseAndAnimate();
-        console.log("You win!");
-        document.querySelector('.next-level').style.display = 'block';
+        if (currentLevel < maxLevel) {
+            document.querySelector('.next-level').style.display = 'block';
+        } else {
+            endTime = Date.now();
+            const totalTimeMs = endTime - startTime;
+            const minutes = Math.floor(totalTimeMs / 60000);
+            const seconds = Math.floor((totalTimeMs % 60000) / 1000);
+            alert("You have completed this level !\nGame completed in " + minutes + "m " + seconds + "s.");
+        }
     }
 }
-
-// function addGameLogEntry(message) {
-//   logCount++;
-//   const logBox = document.getElementById('game-log');
-//   const newLog = document.createElement('div');
-//   newLog.textContent = `${String(logCount).padStart(2, '0')} - ${message}`;
-//   logBox.appendChild(newLog);
-// }
 
 
 function dogActivate() {
@@ -419,6 +421,31 @@ function hurt() {
         );
         currentFrame = (currentFrame + 1) % totalFrames;
     }, frameDelay);
+}
+
+function bark() {
+    let currentFrame = 0;
+    let totalFrames = 4;
+    let frameDelay = 130;
+
+    clearInterval(animationInterval);
+    dogCanvas.width = dogFrameWidth * 5;
+    dogCanvas.height = dogFrameHeight * 6;
+    dogCtx.setTransform(1, 0, 0, 1, 0, 0);
+    dogCtx.scale(5, 5);
+
+    animationInterval = setInterval(() => {
+        dogCtx.clearRect(0, 0, dogCanvas.width, dogCanvas.height);
+        dogCtx.drawImage(
+            spriteBark,
+            currentFrame * dogFrameWidth, 0,
+            dogFrameWidth, dogFrameHeight,
+            0, 0,
+            dogFrameWidth, dogFrameHeight
+        );
+        currentFrame = (currentFrame + 1) % totalFrames;
+    }, frameDelay);
+
 }
 
 function heal() {
